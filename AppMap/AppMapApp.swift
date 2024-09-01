@@ -11,7 +11,7 @@ import SwiftUI
 struct AppMapApp: App {
     var body: some Scene {
         WindowGroup {
-            ContentView()
+            MapView()
         }
     }
 }
