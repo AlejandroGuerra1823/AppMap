@@ -13,12 +13,26 @@ struct MapView: View {
     
     @State var places:[Place] = []
     
+    @State var showPopUp:Bool = false
     
     var body: some View {
         ZStack{
             MapReader{ proxy in Map(position: $position).onTapGesture {
-                
+                showPopUp = true
             }}
+            
+            if showPopUp{
+                
+                var  view = VStack{
+                    Text("Prueba 1")
+                    Text("Prueba 2")
+                    Text("Prueba 3")
+                    
+                }
+                
+                CustomDialog(closeDialog: {showPopUp = false}, onDismissOutside: true, content: view)
+                
+            }
         }
         
         

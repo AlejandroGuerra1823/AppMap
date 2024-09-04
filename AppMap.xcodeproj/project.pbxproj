@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		0817103D2C8802A000130271 /* CustomDialog.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0817103C2C8802A000130271 /* CustomDialog.swift */; };
 		08AF531A2C86B48C00D1143E /* Place.swift in Sources */ = {isa = PBXBuildFile; fileRef = 08AF53192C86B48C00D1143E /* Place.swift */; };
 		08E4E8CD2C84FDE2005095B2 /* AppMapApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 08E4E8CC2C84FDE2005095B2 /* AppMapApp.swift */; };
 		08E4E8CF2C84FDE2005095B2 /* MapView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 08E4E8CE2C84FDE2005095B2 /* MapView.swift */; };
@@ -15,6 +16,7 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		0817103C2C8802A000130271 /* CustomDialog.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomDialog.swift; sourceTree = "<group>"; };
 		08AF53192C86B48C00D1143E /* Place.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Place.swift; sourceTree = "<group>"; };
 		08E4E8C92C84FDE2005095B2 /* AppMap.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = AppMap.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		08E4E8CC2C84FDE2005095B2 /* AppMapApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppMapApp.swift; sourceTree = "<group>"; };
@@ -34,6 +36,14 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		0817103A2C87FECC00130271 /* Components */ = {
+			isa = PBXGroup;
+			children = (
+				0817103C2C8802A000130271 /* CustomDialog.swift */,
+			);
+			path = Components;
+			sourceTree = "<group>";
+		};
 		08AF53182C86B47500D1143E /* model */ = {
 			isa = PBXGroup;
 			children = (
@@ -61,6 +71,7 @@
 		08E4E8CB2C84FDE2005095B2 /* AppMap */ = {
 			isa = PBXGroup;
 			children = (
+				0817103A2C87FECC00130271 /* Components */,
 				08AF53182C86B47500D1143E /* model */,
 				08E4E8DA2C84FE67005095B2 /* Screens */,
 				08E4E8CC2C84FDE2005095B2 /* AppMapApp.swift */,
@@ -156,6 +167,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				0817103D2C8802A000130271 /* CustomDialog.swift in Sources */,
 				08AF531A2C86B48C00D1143E /* Place.swift in Sources */,
 				08E4E8CF2C84FDE2005095B2 /* MapView.swift in Sources */,
 				08E4E8CD2C84FDE2005095B2 /* AppMapApp.swift in Sources */,
