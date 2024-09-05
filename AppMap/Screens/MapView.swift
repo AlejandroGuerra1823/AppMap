@@ -9,37 +9,90 @@ import SwiftUI
 import MapKit
 
 struct MapView: View {
-    @State var position = MapCameraPosition.region(MKCoordinateRegion(center: CLLocationCoordinate2D(latitude: 40.419969, longitude: -3.702561), span: MKCoordinateSpan(latitudeDelta: 1, longitudeDelta: 1)))
+    @State var position = MapCameraPosition.region(
+        MKCoordinateRegion(center: CLLocationCoordinate2D(latitude: 40.419969, longitude: -3.702561),
+                           span: MKCoordinateSpan(latitudeDelta: 1, longitudeDelta: 1)))
+    
     
     @State var places:[Place] = []
+    @State var showSheet = false
+    @State var showPopUp:CLLocationCoordinate2D? = nil
+    @State var name:String = ""
+    @State var fav:Bool = false
     
-    @State var showPopUp:Bool = false
+    let height = stride(from: 0.3, through: 0.3, by: 0.1).map{
+        PresentationDetent.fraction($0)}
     
     var body: some View {
         ZStack{
-            MapReader{ proxy in Map(position: $position).onTapGesture {
-                showPopUp = true
-            }}
+            MapReader{ proxy in
+                Map(position: $position){
+                    ForEach(places){ place in
+                        Annotation(place.name, coordinate:  place.coordinates){
+                            let color = if place.fav {Color.yellow}else{Color.black}
+                            
+                            Circle().stroke(color, lineWidth: 3)
+                                .fill(.white)
+                                .frame(width: 35, height: 35)
+                        }
+                        
+                    }
+                }.onTapGesture { coord in
+                    if let coordinates = proxy.convert(coord, from: .local){
+                        showPopUp = coordinates
+                    }
+                }.overlay{
+                    VStack{
+                        Button("Show list"){
+                            showSheet = true
+                        }.padding(.horizontal, 16)
+                            .padding(.vertical,8)
+                            .background(.white)
+                            .cornerRadius(16)
+                            .padding(16)
+                        
+                        Spacer()
+                    }
+                }
+            }
             
-            if showPopUp{
+            if showPopUp != nil{
                 
-                var  view = VStack{
-                    Text("Prueba 1")
-                    Text("Prueba 2")
-                    Text("Prueba 3")
+                let  view = VStack{
+                    Text("Añadir localizacion").font(.title2).bold()
+                    Spacer()
+                    TextField("Nombre", text: $name).padding(.bottom, 8)
+                    Toggle("Es un lugar fav?", isOn: $fav)
+                    Spacer()
+                    Button("Guardar"){
+                        savePlace(name: name, fav: fav, coordinates: showPopUp!)
+                        clearForm()
+                    }
                     
                 }
-                
-                CustomDialog(closeDialog: {showPopUp = false}, onDismissOutside: true, content: view)
+                withAnimation{
+                    CustomDialog(closeDialog: {showPopUp = nil}, onDismissOutside: true, content: view)
+                }
                 
             }
+        }.sheet(isPresented: $showSheet){
+            ZStack{
+                Text("hola")
+            }.presentationDetents(Set(height))
         }
         
         
     }
+    
+    func savePlace(name:String, fav:Bool, coordinates:CLLocationCoordinate2D){
+        let place = Place(name: name, coordinates: coordinates, fav:fav)
+        
+        places.append(place)
+    }
+    
+    func clearForm(){
+        name = ""
+        fav = false
+        showPopUp = nil
+    }
 }
-
-#Preview {
-    MapView()
-}
-
