@@ -76,23 +76,68 @@ struct MapView: View {
                 
             }
         }.sheet(isPresented: $showSheet){
-            ZStack{
-                Text("hola")
+            ScrollView(.horizontal){
+                LazyHStack{
+                    ForEach(places){ place in
+                        
+                        let color = if place.fav{ Color.yellow.opacity(0.5) }else{ 
+                            Color.black.opacity(0.5)
+                        }
+                        
+                        VStack{
+                            Text(place.name).font(.title3).bold()
+                        }.frame(width: 200, height: 150).overlay{
+                            RoundedRectangle(cornerRadius: 20)
+                            .stroke(color, lineWidth: 1)}.shadow(radius: 5).padding(.horizontal,8)
+                            .onTapGesture {
+                                animateCamera(coordinates: place.coordinates)
+                                showSheet = false
+                            }
+                        
+                    }
+                }
             }.presentationDetents(Set(height))
-        }
+        }.onAppear{loadPlaces()}
         
         
     }
     
+    func animateCamera(coordinates: CLLocationCoordinate2D){
+        withAnimation{
+            position =  MapCameraPosition.region(
+                MKCoordinateRegion(center: coordinates,
+                                   span: MKCoordinateSpan(latitudeDelta: 1, longitudeDelta: 1)))
+            
+        }
+    }
+    
     func savePlace(name:String, fav:Bool, coordinates:CLLocationCoordinate2D){
         let place = Place(name: name, coordinates: coordinates, fav:fav)
-        
         places.append(place)
+        savePlaces()
     }
     
     func clearForm(){
         name = ""
         fav = false
         showPopUp = nil
+    }
+}
+
+
+extension MapView{
+    
+    func savePlaces(){
+        if let encodeData = try? JSONEncoder()
+            .encode(places){
+            UserDefaults.standard.set(encodeData, forKey: "places")
+        }
+    }
+    
+    func loadPlaces(){
+        if let savesPlaces = UserDefaults.standard.data(forKey: "places"),
+           let decodedPlaces = try? JSONDecoder().decode([Place].self, from: savesPlaces){
+            places = decodedPlaces
+        }
     }
 }
